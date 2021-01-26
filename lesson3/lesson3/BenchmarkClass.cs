@@ -8,9 +8,13 @@ namespace lesson3
     public class BenchmarkClass
     {
 
-        PointClass[] x = GenerateArrayOfPoints(10000);
+        /*PointClass[] x = GenerateArrayOfPoints(10000);
         PointStruct<float>[] y = GenerateArrayOfFloatPointsStruct(10000);
-        PointStruct<double>[] a = GenerateArrayOfDoublePointsStruct(10000);
+        PointStruct<double>[] a = GenerateArrayOfDoublePointsStruct(10000);*/
+
+        IEnumerator<(PointClass, PointClass)> GetPairOfPointsIterator = GetPairOfPoints(GenerateArrayOfPoints(10000));
+        IEnumerator<(PointStruct<float>, PointStruct<float>)> GetPairOfFloatPointsStructIterator = GetPairOfFloatPointsStruct(GenerateArrayOfFloatPointsStruct(10000));
+        IEnumerator<(PointStruct<double>, PointStruct<double>)> GetPairOfDoublePointsStructIterator = GetPairOfDoublePointsStruct(GenerateArrayOfDoublePointsStruct(10000));
 
         public static PointClass[] GenerateArrayOfPoints(int size)
         {
@@ -95,36 +99,32 @@ namespace lesson3
             }
         }
 
-        public static float PointClassDistance(PointClass[] PointClass)
+        public static float PointClassDistance(IEnumerator<(PointClass, PointClass)> iterator)
         {
-            var iterator = GetPairOfPoints(PointClass);
             iterator.MoveNext();
             (PointClass pointOne, PointClass pointTwo) = iterator.Current;
             float x = pointOne.X - pointTwo.X;
             float y = pointOne.Y - pointTwo.Y;
             return MathF.Sqrt((x * x) + (y * y));
         }
-        public static float PointFloatStructDistance(PointStruct<float>[] PointStruct)
+        public static float PointFloatStructDistance(IEnumerator<(PointStruct<float>, PointStruct<float>)> iterator)
         {
-            var iterator = GetPairOfFloatPointsStruct(PointStruct);
             iterator.MoveNext();
             (PointStruct<float> pointOne, PointStruct<float> pointTwo) = iterator.Current;
             float x = pointOne.X - pointTwo.X;
             float y = pointOne.Y - pointTwo.Y;
             return MathF.Sqrt((x * x) + (y * y));
         }
-        public static double PointDoubleStructDistance(PointStruct<double>[] PointStruct)
+        public static double PointDoubleStructDistance(IEnumerator<(PointStruct<double>, PointStruct<double>)> iterator)
         {
-            var iterator = GetPairOfDoublePointsStruct(PointStruct);
             iterator.MoveNext();
             (PointStruct<double> pointOne, PointStruct<double> pointTwo) = iterator.Current;
             double x = pointOne.X - pointTwo.X;
             double y = pointOne.Y - pointTwo.Y;
             return Math.Sqrt((x * x) + (y * y));
         }
-        public static float PointFloatStructDistanceNoSqrt(PointStruct<float>[] PointStruct)
+        public static float PointFloatStructDistanceNoSqrt(IEnumerator<(PointStruct<float>, PointStruct<float>)> iterator)
         {
-            var iterator = GetPairOfFloatPointsStruct(PointStruct);
             iterator.MoveNext();
             (PointStruct<float> pointOne, PointStruct<float> pointTwo) = iterator.Current;
             float x = pointOne.X - pointTwo.X;
@@ -135,22 +135,22 @@ namespace lesson3
         [Benchmark]
         public void PointClassDistanceTest()
         {
-            PointClassDistance(x);
+            PointClassDistance(GetPairOfPointsIterator);
         }
         [Benchmark]
         public void PointFloatStructDistanceTest()
         {
-            PointFloatStructDistance(y);
+            PointFloatStructDistance(GetPairOfFloatPointsStructIterator);
         }
         [Benchmark]
         public void PointDoubleStructDistanceTest()
         {
-            PointDoubleStructDistance(a);
+            PointDoubleStructDistance(GetPairOfDoublePointsStructIterator);
         }
         [Benchmark]
         public void PointFloatStructDistanceNoSqrtTest()
         {
-            PointFloatStructDistanceNoSqrt(y);
+            PointFloatStructDistanceNoSqrt(GetPairOfFloatPointsStructIterator);
         }
     }
 }
