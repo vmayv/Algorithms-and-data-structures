@@ -18,6 +18,11 @@ namespace lesson4task2
             {
                 tree.Insert(item);
             }
+
+            var dfs = tree.DFS(60);
+            Console.WriteLine();
+            var bfs = tree.BFS(60);
+            Console.ReadKey();
         }
     }
 }

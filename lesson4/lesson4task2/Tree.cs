@@ -161,6 +161,94 @@ namespace lesson4task2
             }
 
         }
+        public Node<int> BFS(int value)
+        {
+            var queue = new Queue<Node<int>>();
+
+            if (firstNode == null)
+            {
+                return null;
+            }
+
+            queue.Enqueue(firstNode);
+
+            while (queue.Count > 0)
+            {
+                var item = queue.Dequeue();
+
+                Console.Write($"Current item: {item}");
+
+                if (item.Data == value)
+                {
+                    Console.WriteLine(" <=== Found!");
+                    return item;
+                }
+
+                if (item.Left != null)
+                {
+                    queue.Enqueue(item.Left);
+                }
+
+                if (item.Right != null)
+                {
+                    queue.Enqueue(item.Right);
+                }
+
+                Console.WriteLine();
+            }
+            Console.WriteLine($"Item with value {value} not found");
+
+            return null;
+        }
+
+        public Node<int> DFS(int value)
+        {
+            var visitedNodes = new HashSet<Node<int>>();
+            var stack = new Stack<Node<int>>();
+
+            if (firstNode == null)
+            {
+                return null;
+            }
+
+            stack.Push(firstNode);
+
+            while (stack.Count > 0)
+            {
+                var item = stack.Pop();
+
+                Console.Write($"Current item: {item}");
+
+                if (item.Data == value)
+                {
+                    Console.WriteLine(" <=== Found!");
+                    return item;
+                }
+
+                if (item.Left != null && !visitedNodes.Contains(item.Left))
+                {
+                    stack.Push(item);
+                    stack.Push(item.Left);
+                    Console.WriteLine();
+                    continue;
+                }
+
+                if (item.Right != null && !visitedNodes.Contains(item.Right))
+                {
+                    stack.Push(item);
+                    stack.Push(item.Right);
+                    Console.WriteLine();
+                    continue;
+                }
+
+                visitedNodes.Add(item);
+
+                Console.WriteLine();
+            }
+            Console.WriteLine($"Item with value {value} not found");
+
+            return null;
+        }
         private int BalanceFactor(Node<int> node)
         {
             int leftNodeHeight = GetHeight(node.Left);
