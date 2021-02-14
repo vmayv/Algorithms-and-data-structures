@@ -14,5 +14,10 @@ namespace lesson6
         {
             ConnectedNode = connectedNode;
         }
+
+        public override string ToString()
+        {
+            return $"--> {ConnectedNode}";
+        }
     }
 }

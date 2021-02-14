@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace lesson6
 {
@@ -10,6 +6,12 @@ namespace lesson6
     {
         public T Data { get; set; }
         public List<Edge> Edges { get; }
+
+        public Node()
+        {
+            Edges = new List<Edge>();
+        }
+
         public override string ToString()
         {
             return Data.ToString();
